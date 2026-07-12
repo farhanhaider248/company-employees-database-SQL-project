@@ -1,0 +1,97 @@
+create database employees;
+use employees;
+
+create table employee(
+emp_id int primary key,
+name varchar(50),
+age int,
+department varchar(50),
+salary int);
+
+insert into employee
+(emp_id, name, age, department , salary)
+VALUES
+(1,'Ali',22,'IT',35000),
+(2,'Sara',25,'HR',40000),
+(3,'Ahmed',28,'IT',50000),
+(4,'Zoya',24,'Sales',30000),
+(5,'Rahul',30,'Finance',60000);
+
+select * from employee;
+
+select * from employee where department = 'IT';
+select * from employee where salary > 40000;
+update employee set salary = 38000 where name = 'ali';
+delete from employee where name = 'zoya';
+select avg(salary) from employee;
+select max(salary) from employee;
+select count(name) from employee;
+select * from employee order by salary desc;
+select distinct salary from employee order by salary desc limit 1 offset 1;
+select * from employee where age between 23 and 29;
+select * from employee where name like 'A%';
+select * from employee where department = 'IT';
+select * from employee where department in ( 'it' , 'finance');
+select * from employee where salary between 30000 and 50000;
+select * from employee order by salary asc limit 1;
+select sum(salary) from employee;
+select * from employee order by age asc;
+select * from employee where char_length(name) = 4;
+update employee set salary = salary +(salary * .10);
+select salary from employee;
+alter table employee rename to staff;
+drop table staff;
+
+create table employee(
+emp_id int primary key,
+name varchar(50),
+department varchar(50),
+salary int,
+manager_id int ,
+city varchar(50));
+
+
+create table department(
+dept_id int primary key,
+depart varchar(50),
+location varchar(50));
+
+insert into employee
+(emp_id, name, manager_id, department , salary,city)
+VALUES
+(1,'Ali',22,'IT',35000,'noida'),
+(2,'Sara',22,'HR',40000,'delhi'),
+(3,'Ahmed',28,'IT',50000,'noida'),
+(4,'Zoya',28,'Sales',30000,'gurgaon'),
+(5,'Rahul',30,'Finance',60000,'noida');
+
+insert into department
+(dept_id , depart, location)
+values
+(1,'IT','noida'),
+(2,'HR','delhi'),
+(3,'IT','noida'),
+(4,'Sales','gurgaon'),
+(5,'Finance','noida');
+select * from department;
+select * from employee;
+select * from employee where department = 'IT' and salary >40000;
+select * from employee order by salary desc limit 3;
+SELECT department,
+AVG(salary)
+FROM Employee
+GROUP BY department;
+
+
+select department, avg(salary) from employee group by department having avg(salary)>45000;
+select name from employee where salary = ( select max(salary) from employee);
+
+select * from employee e where salary > (select avg(salary) from employee where department = e.department);
+
+select city, count(*) as Total_employee from employee group by city;
+
+select * from employee e where salary = (select max(salary) from employee where department = e.department);
+
+select distinct salary from employee order by salary desc limit 1 offset 2;
+select name, salary, dense_rank() over(order by salary desc ) as ranking from employee;
+select name, department, salary, rank() over( partition by department order by salary desc ) as Rank_no from employee;
